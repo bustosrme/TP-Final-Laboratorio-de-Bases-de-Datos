@@ -1,3 +1,17 @@
+-- Año: 2023
+-- Grupo Nro: 01
+-- Integrantes:
+--               Bustos Roldan Mauro Exequiel
+--               Fernandez Siles Joaquin
+-- Tema: TecManager
+-- Nombre del Esquema LBD2023G01TecManager
+-- Plataforma (SO + Versión): Ubuntu 22.04.02 LTS
+-- Motor y Versión: MySQL Workbench 8.0.32 (Community Edition)
+-- GitHub Repositorio: LBD2023G01
+-- GitHub Usuario: bustosrme, JoaFS
+
+
+
 -- Borrado y creacion de la base de datos
 DROP DATABASE IF EXISTS LBD2023G01;
 CREATE DATABASE IF NOT EXISTS LBD2023G01;
@@ -160,7 +174,7 @@ INSERT INTO Clientes (razonSocial,CUIT,direccion,telefono) VALUES ("Carrefour","
 INSERT INTO Clientes (razonSocial,CUIT,direccion,telefono) VALUES ("Jumbo","30-70877296-4","Fermín Cariola 42, T4107 Yerba Buena, Tucumán","55555555555");
 INSERT INTO Clientes (razonSocial,CUIT,direccion,telefono) VALUES ("Corralon Aconquija","30-53349356-0","Combate de San Lorenzo 1345, T4000 San Miguel de Tucumán","6666666666");
 INSERT INTO Clientes (razonSocial,CUIT,direccion,telefono) VALUES ("Entropy","30-71591476-6","Gral. Paz 576 Piso 17 Oficina 1, T4000 San Miguel de Tucumán","7777777777");
-INSERT INTO Clientes (razonSocial,CUIT,direccion,telefono) VALUES ("Cultura IT","30- -0","Maipú 50, T4000 San Miguel de Tucumán","8888888888");
+INSERT INTO Clientes (razonSocial,CUIT,direccion,telefono) VALUES ("Cultura IT","30-99999999-0","Maipú 50, T4000 San Miguel de Tucumán","8888888888");
 INSERT INTO Clientes (razonSocial,CUIT,direccion,telefono) VALUES ("Globant","30-70821335-3","Av. Juan Domingo Perón 2300, Yerba Buena, Tucumán","9999999999");
 INSERT INTO Clientes (razonSocial,CUIT,direccion,telefono) VALUES ("Sovos","30-70899329-4","Av. Manuel Belgrano 1915, San Miguel de Tucumán, Tucumán","0000000000");
 INSERT INTO Clientes (razonSocial,CUIT,direccion,telefono) VALUES ("Censys","30-56057760-1","Complejo Altercity, Av. Juan Domingo Perón 2300, T4107 Yerba Buena, Tucumán","1234123412");
