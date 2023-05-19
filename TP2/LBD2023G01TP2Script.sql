@@ -12,6 +12,16 @@
 
 USE `LBD2023G01`;
 
+-- PUNTO 1: Dado un cliente, listar todos sus equipos. Mostrar apellido, nombre razon social y cuit,
+-- 			marca y modelo del equipo.
+
+SELECT Operador.apellido, Operador.nombre, Clientes.razonSocial, Clientes.CUIT, Marcas.nombre, Modelos.nombre
+FROM 	((((Clientes JOIN Operador ON Clientes.idCliente = Operador.idCliente)
+		JOIN Equipos ON Operador.idCliente = Equipos.idCliente)
+        JOIN Modelos ON Equipos.idModelo = Modelos.idModelo)
+        JOIN Marcas ON Modelos.idMarca = Marcas.idMarca)
+        WHERE Clientes.idCliente = 1;
+
 -- Punto 2
 -- Realizar un listado de mensajes agrupados por Operador.
 
@@ -46,6 +56,15 @@ FROM Servicios
 WHERE DATE(fechaFin) <= '2023-05-19' && DATE(fechaFin) >= '2023-05-03'
 GROUP BY fechaFin;
 
+-- PUNTO 5: Hacer un ranking con los 10 servicios que más realizaron. Mostrar el tipo y el total de
+-- 			servicios en forma descendente.
+
+SELECT COUNT(Servicios.idServicio) AS 'Servicios más realizados', TipoServicio.descripcion
+FROM Servicios JOIN TipoServicio ON Servicios.idTipoServicio = TipoServicio.idTipoServicio
+GROUP BY TipoServicio.idTipoServicio
+ORDER BY COUNT(Servicios.idServicio) DESC
+LIMIT 10;
+
 -- Punto 6
 -- Hacer un ranking con los TODOS servicios que realizaron. Mostrar el tipo y el total de
 -- servicios en forma descendente. Debe contemplar el caso donde existan TipoServicio que
@@ -56,6 +75,16 @@ FROM TipoServicio t LEFT JOIN Servicios s
 ON t.idTipoServicio = s.idTipoServicio
 GROUP BY t.descripcion
 ORDER BY count(s.idServicio) DESC;
+
+-- PUNTO 7: Hacer un ranking con los 10 tipos de servicio más costosos. Mostrar fecha, el nombre del
+-- 			tipo de servicio, la cantidad de líneas realizadas, y el precio total.
+
+SELECT Servicios.idServicio AS 'Servicios más costosos', Servicios.fechaFin, Servicios.descripcion, LineaServicio.precio
+FROM Servicios JOIN LineaServicio ON Servicios.idServicio = LineaServicio.idServicio
+GROUP BY Servicios.idServicio, Servicios.fechaFin, Servicios.descripcion, LineaServicio.precio
+ORDER BY LineaServicio.precio DESC
+LIMIT 10;
+
 
 -- Punto 8
 -- Crear una vista con la funcionalidad del apartado 3.
