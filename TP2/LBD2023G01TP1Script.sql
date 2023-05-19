@@ -637,7 +637,7 @@ INSERT INTO TipoServicio (descripcion) VALUES ("Limpieza");
 INSERT INTO TipoServicio (descripcion) VALUES ("Mantenimiento");
 INSERT INTO TipoServicio (descripcion) VALUES ("Cambio de pasta termica");
 INSERT INTO TipoServicio (descripcion) VALUES ("Formateo");
-
+INSERT INTO TipoServicio (descripcion) VALUES ("Cambio de componentes");
 
 -- 
 -- TABLE: Servicios 
@@ -656,47 +656,48 @@ CREATE TABLE Servicios(
     FOREIGN KEY (idTipoServicio) REFERENCES TipoServicio(idTipoServicio)
 )ENGINE=INNODB;
 
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (13,1,"Servicio 1",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (12,2,"Servicio 2",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (11,3,"Servicio 3",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (10,4,"Servicio 4",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (9,5,"Servicio 5",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (8,4,"Servicio 6",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (7,3,"Servicio 7",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (6,2,"Servicio 8",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (5,1,"Servicio 9",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (4,2,"Servicio 10",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (3,3,"Servicio 11",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (2,4,"Servicio 12",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (1,5,"Servicio 13",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (2,4,"Servicio 14",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (3,3,"Servicio 15",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (4,2,"Servicio 16",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (5,1,"Servicio 17",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (6,2,"Servicio 18",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (7,3,"Servicio 19",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (8,4,"Servicio 20",10.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (9, 5, 'Servicio 21', 11.75);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (13, 1, 'Servicio 22', 12.25);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (16, 3, 'Servicio 23', 9.99);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (22, 2, 'Servicio 24', 11.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (27, 4, 'Servicio 25', 10.75);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (5, 1, 'Servicio 26', 12.99);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (10, 5, 'Servicio 27', 11.25);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (8, 4, 'Servicio 28', 10.99);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (12, 2, 'Servicio 29', 12.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (23, 3, 'Servicio 30', 9.75);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (15, 1, 'Servicio 31', 11.99);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (18, 5, 'Servicio 32', 12.25);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (7, 4, 'Servicio 33', 9.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (19, 2, 'Servicio 34', 10.75);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (24, 3, 'Servicio 35', 11.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (11, 1, 'Servicio 36', 9.99);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (21, 5, 'Servicio 37', 12.50);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (6, 4, 'Servicio 38', 9.75);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (28, 2, 'Servicio 39', 11.99);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (14, 3, 'Servicio 40', 10.25);
-INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio) VALUES (2, 4, 'Servicio 41', 10.50);
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (13, 1, 'Servicio 1', 10.50, '2023-05-18 10:30:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (12, 2, 'Servicio 2', 10.50, '2023-05-17 15:45:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (11, 3, 'Servicio 3', 10.50, '2023-05-16 09:20:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (10, 4, 'Servicio 4', 10.50, '2023-05-15 13:10:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (9, 5, 'Servicio 5', 10.50, '2023-05-14 17:55:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (8, 4, 'Servicio 6', 10.50, '2023-05-13 11:40:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (7, 3, 'Servicio 7', 10.50, '2023-05-12 14:25:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (6, 2, 'Servicio 8', 10.50, '2023-05-11 16:05:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (5, 1, 'Servicio 9', 10.50, '2023-05-10 08:45:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta, fechaFin) VALUES (4, 2, 'Servicio 10', 10.50, '2023-05-09 19:30:00', '2023-05-16 10:30:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (3, 3, 'Servicio 11', 10.50, '2023-05-08 12:15:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (2, 4, 'Servicio 12', 10.50, '2023-05-07 22:00:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta, fechaFin) VALUES (1, 5, 'Servicio 13', 10.50, '2023-05-06 18:20:00', '2023-05-12 19:30:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (2, 4, 'Servicio 14', 10.50, '2023-05-05 09:35:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (3, 3, 'Servicio 15', 10.50, '2023-05-04 16:55:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta, fechaFin) VALUES (4, 2, 'Servicio 16', 10.50, '2023-05-03 13:25:00', '2023-05-17 11:45:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (5, 1, 'Servicio 17', 10.50, '2023-05-02 10:50:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (6, 2, 'Servicio 18', 10.50, '2023-05-01 15:15:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta, fechaFin) VALUES (7, 3, 'Servicio 19', 10.50, '2023-04-30 11:30:00', '2023-05-17 11:45:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (8, 4, 'Servicio 20', 10.50, '2023-04-29 14:50:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (9, 5, 'Servicio 21', 11.75, '2023-04-28 17:10:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (13, 1, 'Servicio 22', 12.25, '2023-04-27 09:45:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (16, 3, 'Servicio 23', 9.99, '2023-04-26 19:55:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta, fechaFin) VALUES (22, 2, 'Servicio 24', 11.50, '2023-04-25 12:30:00', '2023-05-10 11:45:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (27, 4, 'Servicio 25', 10.75, '2023-04-24 16:00:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (5, 1, 'Servicio 26', 12.99, '2023-04-23 10:20:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (10, 5, 'Servicio 27', 11.25, '2023-04-22 14:40:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (8, 4, 'Servicio 28', 10.99, '2023-04-21 16:05:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (12, 2, 'Servicio 29', 12.50, '2023-04-20 09:30:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta, fechaFin) VALUES (23, 3, 'Servicio 30', 9.75, '2023-04-19 13:55:00', '2023-05-03 11:45:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta, fechaFin) VALUES (15, 1, 'Servicio 31', 11.99, '2023-04-18 18:20:00', '2023-05-08 14:45:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta, fechaFin) VALUES (18, 5, 'Servicio 32', 12.25, '2023-04-17 11:45:00',' 2023-05-01 12:45:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (7, 4, 'Servicio 33', 9.50, '2023-04-16 15:10:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (19, 2, 'Servicio 34', 10.75, '2023-04-15 19:35:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (24, 3, 'Servicio 35', 11.50, '2023-04-14 10:00:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (11, 1, 'Servicio 36', 9.99, '2023-04-13 13:25:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (21, 5, 'Servicio 37', 12.50, '2023-04-12 16:50:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (6, 4, 'Servicio 38', 9.75, '2023-04-11 10:15:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (28, 2, 'Servicio 39', 11.99, '2023-04-10 13:40:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (14, 3, 'Servicio 40', 10.25, '2023-04-09 17:05:00');
+INSERT INTO Servicios (idCliente, idTipoServicio, descripcion, precio, fechaAlta) VALUES (2, 4, 'Servicio 41', 10.50, '2023-04-08 20:30:00');
+
 
 SELECT * FROM Servicios;
 
