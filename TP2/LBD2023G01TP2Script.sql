@@ -17,8 +17,8 @@ USE `LBD2023G01`;
 
 SELECT Operador.apellido, Operador.nombre, Clientes.razonSocial, Clientes.CUIT, Marcas.nombre, Modelos.nombre
 FROM 	((((Clientes JOIN Operador ON Clientes.idCliente = Operador.idCliente)
-		JOIN Equipos ON Operador.idCliente = Equipos.idCliente)
-        JOIN Modelos ON Equipos.idModelo = Modelos.idModelo)
+		JOIN Equipos ON Operador.idCliente = Equipos.idCliente AND Operador.idOperador = Equipos.idOperador)
+        JOIN Modelos ON Equipos.idModelo = Modelos.idModelo AND Equipos.idMarca = Modelos.idMarca)
         JOIN Marcas ON Modelos.idMarca = Marcas.idMarca)
         WHERE Clientes.idCliente = 1;
 
@@ -38,10 +38,10 @@ SELECT s.idServicio, s.fechaAlta, s.fechaFin,
 op.apellido, op.nombre, c.razonSocial, c.CUIT, ma.nombre AS Marca,
 mo.nombre as Modelo, ca.nombre AS Categoria
 FROM (((((((Servicios s JOIN Clientes c ON s.idCliente = c.idCliente)
-JOIN LineaServicio ls ON s.idServicio = ls.idServicio)
-JOIN Equipos e ON ls.idEquipo = e.idEquipo)
-JOIN Operador op ON e.idOperador = op.idOperador)
-JOIN Modelos mo ON e.idModelo = mo.idModelo)
+JOIN LineaServicio ls ON s.idServicio = ls.idServicio AND ls.idCliente = s.idCliente)
+JOIN Equipos e ON ls.idEquipo = e.idEquipo AND ls.idOperador = e.idOperador AND ls.idCliente AND e.idCliente)
+JOIN Operador op ON e.idOperador = op.idOperador AND e.idCliente = op.idCliente)
+JOIN Modelos mo ON e.idModelo = mo.idModelo AND e.idMarca = mo.idMarca)
 JOIN Marcas ma ON mo.idMarca = ma.idMarca)
 JOIN Categorias ca ON e.idCategoria = ca.idCategoria)
 ORDER BY s.fechaAlta DESC;
@@ -79,7 +79,7 @@ ORDER BY count(s.idServicio) DESC;
 -- 			tipo de servicio, la cantidad de líneas realizadas, y el precio total.
 
 SELECT Servicios.idServicio AS 'Servicios más costosos', Servicios.fechaFin, Servicios.descripcion, LineaServicio.precio
-FROM Servicios JOIN LineaServicio ON Servicios.idServicio = LineaServicio.idServicio
+FROM Servicios JOIN LineaServicio ON Servicios.idServicio = LineaServicio.idServicio AND Servicios.idCliente = LineaServicio.idCliente
 GROUP BY Servicios.idServicio, Servicios.fechaFin, Servicios.descripcion, LineaServicio.precio
 ORDER BY LineaServicio.precio DESC
 LIMIT 10;
@@ -1149,7 +1149,7 @@ DROP VIEW IF EXISTS V_Tickets;
 CREATE VIEW V_Tickets
 AS
     SELECT Tickets.idTicket, Tickets.fechaRecibe, Tickets.fechaAlta, Tickets.descripcion, Operador.nombre, Operador.apellido
-    FROM Tickets JOIN Operador ON Tickets.idOperador = Operador.idOperador
+    FROM Tickets JOIN Operador ON Tickets.idOperador = Operador.idOperador AND Tickets.idCliente = Operador.idCliente
     WHERE Tickets.fechaFin IS NULL;
 
 SELECT * FROM V_Tickets;

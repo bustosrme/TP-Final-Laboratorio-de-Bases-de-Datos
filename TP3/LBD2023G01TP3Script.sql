@@ -189,7 +189,67 @@ SELECT @resultado; -- Reviso el valor del parámetro de salida
 
 
 -- 5. Modificación de un Servicio.
+DROP PROCEDURE IF EXISTS ModServicio;
 
+DELIMITER //
+CREATE PROCEDURE ModServicio (pIDServicio INT, pIDCliente INT, pIDTipoServicio INT, pDescripcion VARCHAR(255), pPrecio DECIMAL (15,2), pFechaAlta DATETIME, OUT mensaje VARCHAR (100))
+SALIR: BEGIN
+
+-- CONTROLO EL ID DEL CLIENTE
+	IF pIDCliente IS NULL OR pIDCliente = 0 THEN
+		SET mensaje = 'Error - El Cliente es obligatorio';
+	LEAVE SALIR;
+    END IF;
+    
+-- CONTROLO EL ID DEL TIPO DE SERVICIO
+	IF pIDTIpoServicio IS NULL OR pIDTipoServicio = 0 THEN
+		SET mensaje = 'Error - El Tipo de Servicio es obligatorio';
+	LEAVE SALIR;
+    END IF;
+
+-- CONTROLO LA DESCRIPCIÓN DEL SERVICIO
+	IF pDescripcion IS NULL OR (LENGTH(pDescripcion) < 10) THEN
+		SET mensaje = 'Error - La descripción debe tener al menos 10 caractéres';
+	LEAVE SALIR;
+    END IF;
+    
+-- CONTROLO EL PRECIO DEL SERVICIO
+	IF pPrecio IS NULL OR pPrecio < 0 THEN
+		SET mensaje = 'Error - Precio inválido';
+	LEAVE SALIR;
+    END IF;
+    
+-- CONTROLO LA FECHA DE ALTA DEL SERVICIO
+	IF pFechaAlta IS NULL OR pFechaAlta > NOW() THEN
+		SET mensaje = 'Error - La fecha es inválida';
+	LEAVE SALIR;
+    END IF;
+    
+-- CONTROLO QUE EL SERVICIO EXISTA
+	IF NOT EXISTS (SELECT idServicio FROM Servicios WHERE idServicio = pIDServicio)
+		THEN SELECT 'El servicio no existe.' AS Mensaje;
+	LEAVE SALIR;
+    END IF;
+    
+    UPDATE	Servicios
+    SET		idCliente = pIDCliente, idTipoServicio = pIDTipoServicio, Descripcion = pDescripcion, Precio = pPrecio, FechaAlta = pFechaAlta
+		WHERE idServicio = pIDServicio;
+	SET Mensaje = 'OK';
+END //
+DELIMITER ;
+
+CALL ModServicio (5, 3, 1, 'Reparacion toner impresora', 900, NOW(),@result); -- OK
+SELECT @result;
+SELECT * FROM Servicios WHERE idServicio = 5;
+
+CALL ModServicio (99, 3, 1, 'Reparacion toner impresora', 900, NOW(),@result); -- IDServicio inválido
+SELECT @result;
+
+CALL ModServicio (5, 3, 1, 'a', 900, NOW(),@result); -- Descripción inválida
+SELECT @result;
+
+CALL ModServicio (5, 3, 1, 'Cambio pasta térmica', 900, '2024-06-09 10:15:00',@result); -- Fecha inválida
+SELECT @result;
 
 
 
@@ -230,12 +290,53 @@ SELECT @result;
 
 
 -- 7. Búsqueda de un Servicio.
--- 8. Dado un cliente, listar todos sus servicios entre 2 fechas.
 
+
+-- 8. Dado un cliente, listar todos sus servicios entre 2 fechas
+-- (COMO NO ESPECIFICA ENTRE CUÁL DE LOS TRES TIPOS DE FECHA QUE TIENEN LOS SERVICIOS, ASUMO FECHA ALTA)
+
+DROP PROCEDURE IF EXISTS ListarServicioFecha;
+
+DELIMITER //
+CREATE PROCEDURE ListarServicioFecha (pIDCliente INT, pFechaAlta1 DATETIME, pFechaAlta2 DATETIME, OUT mensaje VARCHAR (100))
+SALIR: BEGIN 
+
+	-- CONTROLO EL ID DEL CLIENTE
+	IF NOT EXISTS (SELECT * FROM Clientes WHERE idCliente = pIDCliente) THEN
+		SET mensaje = 'Error - No existe el cliente';
+        LEAVE SALIR;
+        END IF;
+    
+    -- CONTROLO LAS FECHAS
+	IF pFechaAlta1 IS NULL OR pFechaAlta2 IS NULL OR pFechaAlta1 > pFechaAlta2 THEN
+		SET mensaje = 'Error - El rango de fechas no es válido';
+	LEAVE SALIR;
+    ELSE
+		START TRANSACTION;
+			SELECT * FROM Clientes INNER JOIN Servicios ON Clientes.idCliente = Servicios.idCliente
+				WHERE Servicios.fechaAlta BETWEEN pFechaAlta1 AND pFechaAlta2 AND Clientes.idCliente = pIDCliente;
+			SET Mensaje = 'Solicitud exitosa';
+			COMMIT;
+	END IF;
+END //
+DELIMITER ;
+
+CALL ListarServicioFecha (2, '2023-03-01 00:00:00','2023-05-08 18:00:00',@result);		-- OK
+SELECT @result;
+
+CALL ListarServicioFecha (99, '2023-03-01 00:00:00','2023-05-01 18:00:00',@result);		-- Cliente inexistente
+SELECT @result;
+
+CALL ListarServicioFecha (2, '2024-03-01 00:00:00','2023-05-01 18:00:00',@result);		-- Fecha 1 mayor que Fecha 2
+SELECT @result;
+
+CALL ListarServicioFecha (2, '2023-03-01 00:00:00','2020-05-01 18:00:00',@result);		-- Fecha 2 mayor que Fecha 1
+SELECT @result;
 
 -- 9. Dado un rango de fechas, mostrar todos los tickets de los clientes que no estén
 -- finalizados. mostrar el operador que solicitó el ticket, la fecha de alta, de recepción y
 -- su descripción. ordenados cronológicamente.
+
 -- 10. Realizar un procedimiento almacenado con alguna funcionalidad que considere
 -- de interés.
 
