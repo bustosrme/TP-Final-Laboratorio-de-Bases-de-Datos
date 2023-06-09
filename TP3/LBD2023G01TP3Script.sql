@@ -161,7 +161,7 @@ SALIR: BEGIN
 	ELSEIF NOT EXISTS (SELECT * FROM TipoServicio WHERE idTipoServicio = pIDTipoServicio) THEN
 		SET mensaje = 'Error - No existe el Tipo de Servicio';
 		LEAVE SALIR;
-	ELSEIF (pDescripcion IS NULL) OR (LENGTH(pDescripcion) > 10) THEN
+	ELSEIF (pDescripcion IS NULL) OR (LENGTH(pDescripcion) < 10) THEN
 		SET mensaje = 'Error - Complete la descripcion';
 		LEAVE SALIR;
 	ELSEIF (pPrecio IS NULL) OR (pPrecio < 0) THEN
@@ -290,9 +290,67 @@ SELECT @result;
 
 
 -- 7. Búsqueda de un Servicio.
+DROP PROCEDURE IF EXISTS BuscarServicioPorDescripcion;
+DROP PROCEDURE IF EXISTS BuscarServicioPorPrecio;
+
+DELIMITER //
+CREATE PROCEDURE BuscarServicioPorDescripcion (pDescripcion VARCHAR (255), OUT mensaje VARCHAR (100))
+SALIR: BEGIN
+	IF (pDescripcion IS NULL) THEN
+		SET mensaje = 'Error - Debe ingresar un valor';
+        LEAVE SALIR;
+	ELSEIF NOT EXISTS (SELECT * FROM Servicios WHERE descripcion LIKE CONCAT (CONCAT('%',pDescripcion),'%')) THEN
+		SET mensaje = CONCAT('No se encontró un servicio con la descripcion: ',pDescripcion);
+        LEAVE SALIR;
+	ELSE
+		START TRANSACTION;
+			SELECT * FROM Servicios WHERE descripcion LIKE CONCAT (CONCAT('%',pDescripcion),'%');
+			SET mensaje = 'Servicios encontrados con éxito';
+        COMMIT;
+	END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE BuscarServicioPorPrecio (pPrecio INT, OUT mensaje VARCHAR (100))
+SALIR: BEGIN
+	IF (pPrecio < 0) OR (pPrecio IS NULL) THEN
+		SET mensaje = 'Error - Precio incorrecto';
+        LEAVE SALIR;
+	ELSEIF NOT EXISTS (SELECT * FROM Servicios WHERE precio = pPrecio) THEN
+		SET mensaje = CONCAT('No se encontró un servicio con el precio ',pPrecio);
+        LEAVE SALIR;
+	ELSE
+		START TRANSACTION;
+			SELECT * FROM Servicios WHERE precio = pPrecio;
+			SET mensaje = 'Servicios encontrados con éxito';
+        COMMIT;
+	END IF;
+END //
+DELIMITER ;
+
+SELECT * FROM Servicios;
+
+CALL BuscarServicioPorDescripcion('icio 2',@result); 	-- funciona
+SELECT @result;
+CALL BuscarServicioPorDescripcion(null,@result);		-- no funciona, no puede ser null
+SELECT @result;
+CALL BuscarServicioPorDescripcion('Esta descripcion no se encuentra en la BD',@result); -- no funciona, no encuentra el campo solicitado
+SELECT @result;
+CALL BuscarServicioPorDescripcion('Esta tampoco está',@result);			-- no funciona, no encuentra el campo solicitado
+SELECT @result;
+
+CALL BuscarServicioPorPrecio(5,@result);			-- funciona
+SELECT @result;
+CALL BuscarServicioPorPrecio(-100,@result);			-- no funciona, precio incorrecto
+SELECT @result;
+CALL BuscarServicioPorPrecio(500,@result);			-- no funciona, no encuentra servicios con ese precio
+SELECT @result;
+CALL BuscarServicioPorPrecio(null,@result);			-- no funciona, campo null
+SELECT @result;
 
 
--- 8. Dado un cliente, listar todos sus servicios entre 2 fechas
+-- 8. Dado un cliente, listar todos sus servicios entre 2 fechas.
 -- (COMO NO ESPECIFICA ENTRE CUÁL DE LOS TRES TIPOS DE FECHA QUE TIENEN LOS SERVICIOS, ASUMO FECHA ALTA)
 
 DROP PROCEDURE IF EXISTS ListarServicioFecha;
@@ -337,10 +395,46 @@ SELECT @result;
 -- finalizados. mostrar el operador que solicitó el ticket, la fecha de alta, de recepción y
 -- su descripción. ordenados cronológicamente.
 
--- 10. Realizar un procedimiento almacenado con alguna funcionalidad que considere
--- de interés.
+DROP PROCEDURE IF EXISTS MostrarTicketsNoFinalizados;
+
+DELIMITER //
+CREATE PROCEDURE MostrarTicketsNoFinalizados (pFechaInicio DATETIME, pFechaFin DATETIME,OUT mensaje VARCHAR (100))
+SALIR: BEGIN
+	IF pFechaInicio IS NULL OR pFechaFin OR pFechaInicio > pFechaFin IS NULL THEN
+		SET mensaje = 'Error - Las fechas ingresadas son incorrectas';
+        LEAVE SALIR;
+	ELSEIF NOT EXISTS (SELECT * FROM Tickets WHERE fechaFin IS NULL) THEN
+		SET mensaje = 'No hay tickets sin finalizar';
+        LEAVE SALIR;
+	ELSEIF NOT EXISTS (SELECT * FROM Tickets WHERE fechaAlta >= pFechaInicio AND fechaAlta <= pFechaFin) THEN
+		SET mensaje = 'No hay tickets sin finalizar entre las fechas indicadas';
+        LEAVE SALIR;
+	ELSE
+		START TRANSACTION;
+			SELECT * 
+				FROM Tickets t INNER JOIN Operador op ON t.idOperador = op.idOperador AND t.idCliente = op.idCliente
+				WHERE t.fechaFin IS NULL AND (t.fechaAlta >= pFechaInicio AND t.fechaAlta <= pFechaFin);
+			SET mensaje = 'Servicios encontrados con éxito';
+        COMMIT;
+	END IF;
+END //
+DELIMITER ;
+
+CALL MostrarTicketsNoFinalizados('2023/05/01','2023/06/01',@result);		-- funciona
+SELECT @result;
+CALL MostrarTicketsNoFinalizados('2022/02/01','2022/04/01',@result);		-- no funciona, no hay tickets en esa fecha
+SELECT @result;
+CALL MostrarTicketsNoFinalizados(null,'2023/06/04',@result);				-- no funciona, la fecha es null
+SELECT @result;
+CALL MostrarTicketsNoFinalizados('2022/04/01','2022/02/01',@result);		-- no funciona, las fechas estan fuera de rango
+SELECT @result;
+
+
+-- 10. Realizar un procedimiento almacenado con alguna funcionalidad que considere de interés.
 
 
 -- 11. Incluir las sentencias de llamada a los procedimientos. Para cada uno hacer 4
 -- llamadas (una con salida correcta y las otras 3 con diferentes errores explicando su
 -- intención en un comentario).
+
+-- Realizado en cada uno de los puntos anteriores luego de la creacion de los SP 
