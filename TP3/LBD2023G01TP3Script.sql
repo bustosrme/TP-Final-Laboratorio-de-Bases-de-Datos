@@ -391,6 +391,31 @@ SELECT @result;
 CALL ListarServicioFecha (2, '2023-03-01 00:00:00','2020-05-01 18:00:00',@result);		-- Fecha 2 mayor que Fecha 1
 SELECT @result;
 
+-- SE AGREGAN NUEVAS INSERCIONES NECESARIAS PARA EL PUNTO 9
+TRUNCATE TABLE Tickets;
+
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta, fechaRecibe, fechaFin) VALUES (1, 1, 1, 'La impresora HP Deskjet no imprime correctamente, los colores están distorsionados.', '2023-04-11 10:15:00', '2023-04-14 10:15:00', '2023-04-16 15:30:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta, fechaRecibe) VALUES (2, 1, 1, 'La computadora Dell OptiPlex se reinicia constantemente y muestra un mensaje de error al iniciar.', '2023-04-13 09:30:00', '2023-04-19 09:30:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta) VALUES (3, 1, 1, 'El monitor LG de 24 pulgadas muestra líneas verticales en la pantalla.', '2023-04-13 14:45:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta) VALUES (4, 1, 1, 'El mouse Logitech MX Master 3 no responde al movimiento.', '2023-04-14 11:20:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta, fechaRecibe, fechaFin) VALUES (5, 2, 1, 'El teclado Microsoft Ergonomic tiene algunas teclas que no funcionan.', '2023-04-15 13:10:00', '2023-04-20 13:10:00', '2023-04-25 09:45:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta) VALUES (6, 5, 2, 'Los parlantes Logitech Z623 emiten un sonido distorsionado al reproducir audio.', '2023-04-16 16:05:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta) VALUES (7, 6, 2, 'El fax Panasonic KX-FP215 no envía ni recibe mensajes.', '2023-04-17 12:40:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta, fechaRecibe) VALUES (8, 7, 2, 'El escáner Epson Perfection V600 no detecta ningún documento al intentar escanear.', '2023-04-18 14:45:00', '2023-04-21 14:45:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta, fechaRecibe, fechaFin) VALUES (9, 8, 2, 'La tablet tiene la pantalla táctil rota y no responde al toque.', '2023-04-19 09:25:00', '2023-04-21 09:25:00', '2023-04-25 14:20:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta) VALUES (10, 8, 2, 'La notebook presenta un fallo en el teclado, algunas teclas se quedan atascadas.', '2023-04-20 11:50:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta) VALUES (11, 9, 3, 'La netbook no se enciende, la pantalla permanece en negro.', '2023-04-21 14:15:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta, fechaRecibe) VALUES (12, 10, 3, 'El módem no establece conexión a Internet, los indicadores LED están apagados.', '2023-04-22 11:20:00', '2023-04-30 11:20:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta) VALUES (13, 11, 3, 'El router WiFi no emite señal, los dispositivos no pueden conectarse.', '2023-04-23 10:05:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta, fechaRecibe, fechaFin) VALUES (14, 12, 3, 'El switch Ethernet no permite la comunicación entre los dispositivos conectados.', '2023-04-24 13:20:00', '2023-05-01 13:20:00', '2023-05-06 10:05:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta) VALUES (15, 9, 3, 'La cámara web no se reconoce, la aplicación no la detecta.', '2023-04-25 15:45:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta) VALUES (16, 13, 4, 'Los auriculares no emiten sonido en uno de los lados.', '2023-04-26 09:10:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta) VALUES (17, 14, 4, 'El micrófono no capta el sonido, no se escucha ninguna grabación.', '2023-04-27 11:35:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta) VALUES (18, 15, 4, 'El pendrive no se puede leer, aparece el mensaje de "unidad no reconocida".', '2023-04-28 13:50:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta, fechaRecibe, fechaFin) VALUES (19, 16, 4, 'El disco portátil no aparece en Mi PC, no se puede acceder a los archivos.', '2023-04-29 16:15:00', '2023-05-03 16:15:00', '2023-05-08 12:30:00');
+INSERT INTO Tickets (idEquipo, idOperador, idCliente, descripcion, fechaAlta) VALUES (20, 14, 4, 'Se requiere soporte técnico para un equipo de otra categoría.', '2023-04-30 10:40:00');
+
+
 -- 9. Dado un rango de fechas, mostrar todos los tickets de los clientes que no estén
 -- finalizados. mostrar el operador que solicitó el ticket, la fecha de alta, de recepción y
 -- su descripción. ordenados cronológicamente.
@@ -400,27 +425,27 @@ DROP PROCEDURE IF EXISTS MostrarTicketsNoFinalizados;
 DELIMITER //
 CREATE PROCEDURE MostrarTicketsNoFinalizados (pFechaInicio DATETIME, pFechaFin DATETIME,OUT mensaje VARCHAR (100))
 SALIR: BEGIN
-	IF pFechaInicio IS NULL OR pFechaFin OR pFechaInicio > pFechaFin IS NULL THEN
+	IF pFechaInicio IS NULL OR pFechaFin IS NULL OR pFechaInicio > pFechaFin IS NULL THEN
 		SET mensaje = 'Error - Las fechas ingresadas son incorrectas';
         LEAVE SALIR;
 	ELSEIF NOT EXISTS (SELECT * FROM Tickets WHERE fechaFin IS NULL) THEN
 		SET mensaje = 'No hay tickets sin finalizar';
         LEAVE SALIR;
-	ELSEIF NOT EXISTS (SELECT * FROM Tickets WHERE fechaAlta >= pFechaInicio AND fechaAlta <= pFechaFin) THEN
+	ELSEIF NOT EXISTS (SELECT * FROM Tickets WHERE fechaAlta BETWEEN pFechaInicio AND pFechaFin) THEN
 		SET mensaje = 'No hay tickets sin finalizar entre las fechas indicadas';
         LEAVE SALIR;
 	ELSE
 		START TRANSACTION;
 			SELECT * 
 				FROM Tickets t INNER JOIN Operador op ON t.idOperador = op.idOperador AND t.idCliente = op.idCliente
-				WHERE t.fechaFin IS NULL AND (t.fechaAlta >= pFechaInicio AND t.fechaAlta <= pFechaFin);
+				WHERE t.fechaFin IS NULL AND (t.fechaAlta BETWEEN pFechaInicio AND pFechaFin);
 			SET mensaje = 'Servicios encontrados con éxito';
         COMMIT;
 	END IF;
 END //
 DELIMITER ;
 
-CALL MostrarTicketsNoFinalizados('2023/05/01','2023/06/01',@result);		-- funciona
+CALL MostrarTicketsNoFinalizados('2023/04/01','2023/05/01',@result);		-- funciona
 SELECT @result;
 CALL MostrarTicketsNoFinalizados('2022/02/01','2022/04/01',@result);		-- no funciona, no hay tickets en esa fecha
 SELECT @result;
@@ -429,8 +454,39 @@ SELECT @result;
 CALL MostrarTicketsNoFinalizados('2022/04/01','2022/02/01',@result);		-- no funciona, las fechas estan fuera de rango
 SELECT @result;
 
+SELECT * FROM Tickets WHERE fechaAlta >= '2023/05/01' AND fechaAlta <= '2023/06/01';
+
 
 -- 10. Realizar un procedimiento almacenado con alguna funcionalidad que considere de interés.
+-- LISTAR TODOS LOS TICKETS DE TODOS LOS CLIENTES, QUE NO HAYAN SIDO RECIBIDOS CON NOMBRE OPERADOR
+-- NOMBRE CLIENTE, EQUIPO Y FECHA DE ALTA
+DROP PROCEDURE IF EXISTS ListarServiciosNoR;
+
+DELIMITER //
+CREATE PROCEDURE ListarServiciosNoR (OUT mensaje VARCHAR (100))
+SALIR: BEGIN 
+	IF NOT EXISTS (SELECT * FROM Tickets WHERE fechaRecibe IS NULL) THEN
+			SET mensaje = 'No hay tickets sin recibir! :D';
+			LEAVE SALIR;
+			ELSE
+				START TRANSACTION;
+				SELECT Operador.Nombre, Operador.Apellido, Clientes.razonSocial, Equipos.idEquipo, Tickets.fechaAlta FROM Clientes
+					INNER JOIN Operador ON Clientes.idCliente = Operador.idCliente
+						INNER JOIN 	Equipos ON Operador.idCliente = Equipos.idCliente AND Operador.idOperador = Equipos.idOperador
+										INNER JOIN Tickets ON Equipos.idEquipo = Tickets.idEquipo AND Equipos.idOperador = Tickets.idOperador
+													AND Equipos.idCliente = Tickets.idCliente
+						WHERE Tickets.fechaRecibe IS NULL;
+						SET Mensaje = 'Tickets mostrados con éxito';
+	END IF;
+	COMMIT;
+	END//
+    
+CALL ListarServiciosNoR(@result);		-- OK
+SELECT @result;
+
+-- AL NO RECIBIR PARÁMETROS, NO PUEDE HABER LLAMADAS ERRÓNEAS EN ESTE SP
+-- EXCEPTO, SI ES QUE NO HUBIERA TICKETS CON FECHA DE RECEPCIPÓN NULA, MOSTRARÍA EL MENSAJE CORRESPONDIENTE
+
 
 
 -- 11. Incluir las sentencias de llamada a los procedimientos. Para cada uno hacer 4
